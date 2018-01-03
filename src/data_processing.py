@@ -43,7 +43,6 @@ class DataProcessing():
         """
         pass
 
-
     def _add_target(self):
         """
         Add class labels for the fraudulent transactions training data
@@ -64,5 +63,41 @@ class DataProcessing():
         """
         self.df["venue_missing"] = df["venue_country"].isnull()
 
-        
+    def _unix_to_datetime(self, columns = ["approx_payout_date","event_created","event_end"]):
+        '''
+        Convert the columns of unix time to datetime object
+        Input: DataFrame, columns to convert
+        Output: DataFrame with columns converted to datetime object
+        '''
+        for column in columns:
+            self.df[column] = pd.to_datetime(self.df[column], unit='s')
+        pass
 
+    # def _description_word_count(self,columns = ["description","org_desc"]):
+    #     '''
+    #     Creat two columns that counts the words in html input columns
+    #     Name of the column is "column"_wc
+    #     input: dataframe, the columns that contains html contents
+    #     Return : datafram with addtional columns contains the word count for the description column
+    #     '''
+    #     for column in columns:
+    #         n = self.df["acct_type"].count()
+    #         self.df[column + "_wc"] = 0
+    #         for i in range(2000):
+    #             if i%1000 ==1:
+    #                 print(i, float(i)/n)
+    #             html = BeautifulSoup(self.df[column][i], "html.parser")
+    #             self.df[column + "_wc"][i] = len(html.get_text().split(" "))
+    #     pass
+    def _payee_org_name(self):
+        n = self.df["acct_type"].count()
+        self.df["payee_org_iou"] = 0.0
+        for i in range(n):
+            if i%1000 == 1:
+                print(i, float(i)/n)
+            st1 = self.df["payee_name"][i]
+            st2 = self.df["org_name"][i]
+            if float(max(len(set(st1.split())),len(set(st2.split())))) > 0:
+                self.df["payee_org_iou"][i] = len(set(st1.split()) & set(st2.split())) \
+                                    /float(max(len(set(st1.split())),len(set(st2.split()))))
+        pass
