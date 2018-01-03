@@ -47,10 +47,22 @@ class DataProcessing():
     def _add_target(self):
         """
         Add class labels for the fraudulent transactions training data
-        :param df: pandas dataframe
-        :return: d
         """
-        self.df["fraud"] = df["acct_type"].eq("premium").mul(1)
+        self.df["fraud"] = self.df["acct_type"].eq("premium").mul(1)
 
 
+    def _add_payout_length(self):
+        """
+        Add the number of previous payouts the organization has received
+        """
+        self.df["payout_length"] = self.df["previous_payouts"].str.len()
+
+
+    def _add_venue_bool(self):
+        """
+        Add a Boolean that indicates whether or not all venue information is included.
+        """
+        self.df["venue_missing"] = df["venue_country"].isnull()
+
+        
 
