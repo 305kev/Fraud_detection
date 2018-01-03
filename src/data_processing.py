@@ -26,28 +26,66 @@ class DataProcessing():
         self.df = df
         self.train = flag
 
-
-    def run_preprocessing(self):
+    def fit(self):
         """
         Controls the preprocessing process
         """
         if self.flag
             self._add_target()
+        self._add_payout_length()
+        self._add_venue_bool()
+        self._convert_unix_to_datetime()
+        self._unix_to_datetime()
+#        self._payee_org_name()
+        self._high_fraud_country()
+        self._high_fraud_email_domain()
+        # cols = ["fraud", "body_length","channels","delivery_method","fb_published",
+        #         "gts","has_analytics","has_logo","name_length","num_order",
+        #         "num_payouts", "org_twitter", "org_facebook", "sale_duration",
+        #         "show_map", "user_age","fraud_country", "email_high_risk",
+        #         "email_gmail", "email_medium_risk","payout_length", "venue_missing",
+        #         "payee_org_iou"]
+        cols = ["fraud", "body_length","channels","delivery_method","fb_published",
+                "gts","has_analytics","has_logo","name_length","num_order",
+                "num_payouts", "org_twitter", "org_facebook", "sale_duration",
+                "show_map", "user_age","fraud_country", "email_high_risk",
+                "email_gmail", "email_medium_risk","payout_length", "venue_missing"]
+        self._keep_columns(cols)
+
+    def _high_fraud_country(self):
+        '''
+        Identify the countries that has high fraud rate
+        Country with entry > 15, and with fraud rate > 50%
+        :return:
+        '''
+        countries = ["A1", "ID", "NA","PH","PK","VN"]
+        self.df["fraud_country"] = self.df["country"].isin(countries)
+
+    def _high_fraud_email_domain(self):
+        '''
+        Identify the email domain that has high fraud rate
+        domains with entry > 15
+        gmail is unique and is used as a separate column
+        :return:
+        '''
+        high_risk = ["joonbug.com", "yahoo.fr", "rocketmail.com","live.fr","lidf.co.uk","ymail.com"]
+        gmail_list = ["gmail.com"]
+        medium_risk = ["hotmail.com","yahoo.com","hotmail.co.uk","live.com","aol.com","yahoo.co.uk"]
+        self.df["email_high_risk"] = self.df["email_domain"].isin(high_risk)
+        self.df["email_gmail"] = self.df["email_domain"].isin(gmail_list)
+        self.df["email_medium_risk"] = self.df["email_domain"].isin(medium_risk)
 
 
-    def _convert_unix_to_datetime(self):
-        """
-        Convert all time columns from unix time to datetime.
-        :param df: pandas dataframe of the fraud detection data
-        :return: df2: pandas dataframe, with unix dates converted to datetimes
-        """
-        pass
+    def._keep_columns(self, cols):
+        self.df = self.df[cols]
+
+
 
     def _add_target(self):
         """
         Add class labels for the fraudulent transactions training data
         """
-        self.df["fraud"] = self.df["acct_type"].eq("premium").mul(1)
+        self.df["fraud"] = 1 - self.df["acct_type"].eq("premium").mul(1)
 
 
     def _add_payout_length(self):
@@ -101,3 +139,4 @@ class DataProcessing():
                 self.df["payee_org_iou"][i] = len(set(st1.split()) & set(st2.split())) \
                                     /float(max(len(set(st1.split())),len(set(st2.split()))))
         pass
+
