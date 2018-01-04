@@ -22,7 +22,7 @@ def predict_to_database():
     mongobd_insert(json_output, client, tablename=tablename)
 
 if __name__ == '__main__':
-    with open("../rf_test.pkl") as f:
+    with open("data/rf_test.pkl") as f:
         model = pickle.load(f)
     client = connect_db()
     dbname = "Fraud_prediction"

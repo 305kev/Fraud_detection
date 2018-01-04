@@ -26,7 +26,7 @@ def connect_db(dbname = "Fraud_prediction",
 
 @app.route('/')
 def index():
-    return render_template('index.html', title='Fraud Prediction: Catch it Before Too Late', data=None)
+    return render_template('index.html', title='Fraud Prediction: Catch it Before it is Too Late', data=None)
 
 
 @app.route('/score', methods=['POST'])
@@ -54,10 +54,10 @@ def score():
             col3.append(doc[cols_dashboard[2]])
             col4.append(doc[cols_dashboard[3]])
         data_display = zip(col1, col2, col3, col4)
-    return render_template('index.html', title='Fraud Prediction: Catch it Before Too Late', data=data_display)
+    return render_template('index.html', title='Fraud Prediction: Catch it Before it is Too Late', data=data_display)
 
 if __name__ == '__main__':
-    with open("../rf_test.pkl") as f:
+    with open("data/rf_test.pkl") as f:
         model = pickle.load(f)
     client = connect_db()
     dbname = "Fraud_prediction"

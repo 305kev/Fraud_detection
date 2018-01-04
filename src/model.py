@@ -27,5 +27,5 @@ if __name__ == '__main__':
     Debugging code for testing purposes
     """
     input_data = "data/data.json"
-    output = "rf_test.pkl"
+    output = "data/rf_test.pkl"
     build_model(input_data, output)
