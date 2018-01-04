@@ -3,7 +3,8 @@ from sklearn.ensemble import RandomForestClassifier
 import pandas as pd
 from sys import argv
 from src.data_processing import DataProcessing
-
+from src.database import mongobd_insert
+from pymongo import MongoClient
 
 """
 The online prediction engine
@@ -33,4 +34,13 @@ if __name__ == "__main__":
     file = argv[1]
     df1 = pd.read_json(argv[2])
     prob = prediction(file, df1)
-    print(prob)
+    df1["predict"] = prediction(file, df1)
+    json_inp = df1.T.to_dict().values()
+
+    mongobd_insert(json_inp[0], tablename = "test")
+    client = MongoClient()
+    dbname = "Fraud_prediction"
+    tablename = "test"
+    db = client[dbname]
+    table = db[tablename]
+    print(table.find_one())
