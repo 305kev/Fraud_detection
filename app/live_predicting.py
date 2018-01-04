@@ -1,4 +1,4 @@
-import cPickle as pickle
+import pickle
 from sklearn.ensemble import RandomForestClassifier
 import urllib2
 from pymongo import MongoClient
