@@ -1,6 +1,6 @@
 from src.data_processing import load_data, DataProcessing
 from sklearn.ensemble import RandomForestClassifier
-import cPickle
+import pickle
 
 
 def build_model(input_file, output_model):
@@ -19,7 +19,7 @@ def build_model(input_file, output_model):
     best_rf = RandomForestClassifier(max_features=None, n_estimators=150, max_depth=30)
     best_rf.fit(x_all, y_all)
     with open(output_model, 'wb') as f:
-        cPickle.dump(best_rf, f)
+        pickle.dump(best_rf, f)
 
 
 if __name__ == '__main__':
