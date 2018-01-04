@@ -1,6 +1,6 @@
 from src.data_processing import load_data, DataProcessing
 from sklearn.ensemble import RandomForestClassifier
-import cPickle
+import pickle
 
 
 def build_model(input_file, output_model):
