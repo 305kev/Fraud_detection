@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 
-def mongobd_insert(json_inp, dbname = "Fraud_prediction",
-                   tablename = "Fraud_prediction_table", host="", port= ""):
+def mongobd_insert(json_inp, client, dbname = "Fraud_prediction",
+                   tablename = "Fraud_prediction_table"):
     '''
     Insert an json_inp to a database in mongdb client
     :param json_inp:
@@ -11,7 +11,6 @@ def mongobd_insert(json_inp, dbname = "Fraud_prediction",
     :param port:
     :return:
     '''
-    client = MongoClient()
     #client = MongoClient(host, port)
     db = client[dbname]
     table = db[tablename]

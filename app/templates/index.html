@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='main_style.css')}}">
+</head>
+<body>
+    <h1>{{ title }}</h1>
+    <div class="dtable">
+        <div style="display: table-row;">
+            <div class="d_cell">
+                <h2>Fraud Detection Engine: Power of Machine Learning</h2>
+
+                <form action="{{ url_for('score') }}" method="post" >
+                    <p>
+                        Enter Your Own Entry as json
+                    </p>
+                    <textarea name="text1" cols="50" rows="15" >
+
+                    </textarea>
+                    <button type="submit" class="btn btn-default">Run</button>
+
+                    <p>
+                        Check the live entry from http://galvanize-case-study-on-fraud.herokuapp.com/data_point
+                    </p>
+
+                    <button type="submit" class="btn btn-default">DashBoard</button>
+
+                </form>
+
+            </div>
+
+
+            <div class="d_cell">
+                <h2>Results</h2>
+                <div id="results">
+                    {% if data is not none %}
+                    <table>
+                        <tbody>
+                            <thead>
+                                <th>Organization</th>
+                                <th>Section Name</th>
+                                <th>Probability</th>
+                            </thead>
+                            {% for contents, sec_name, proba in data %}
+                            <tr>
+                                <td>{{contents}}</td>
+                                <td>{{sec_name}}</td>
+                                <td>{{proba}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
