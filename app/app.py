@@ -7,7 +7,7 @@ from pymongo import MongoClient
 from time import sleep
 import numpy as np
 import pandas as pd
-from src.predict import prediction
+from src.predict import prediction, decode_stream
 from src.database import mongobd_insert
 
 
@@ -39,14 +39,9 @@ def get_entry():
 
 @app.route('/score', methods=['POST'])
 def score():
-    #doc = request.form['text1']
-    #model_select = request.form["model_selected"]
-    # if isinstance(doc, basestring):
-    #     doc = [doc]
-    # sec_name = model_c.predict(doc)
     json_inp = read_stream()
     json_output = prediction(model, json_inp)
-    mongobd_insert(json_output, client)
+    mongobd_insert(json_output, client, tablename="test2")
     return render_template('index.html', title='make prediction', data=zip([],[],[]))
 
 if __name__ == '__main__':

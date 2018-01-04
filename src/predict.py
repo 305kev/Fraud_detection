@@ -3,7 +3,10 @@ import pandas as pd
 from sys import argv
 from src.data_processing import DataProcessing
 import json
-
+import urllib2
+from time import sleep
+import cPickle as pickle
+from pymongo import MongoClient
 
 """
 The online prediction engine
@@ -21,7 +24,7 @@ def prediction(model, to_predict):
     processed_example.fit()
     X = processed_example.df
     df1["predict"] = model.predict_proba(X)[:,1]
-    return df1.T.to_dict().values()
+    return df1.T.to_dict().values()[0]
 
 
 def decode_stream(stream):
@@ -30,18 +33,35 @@ def decode_stream(stream):
     :param stream: json byte stream of prediction instance
     :return: df: pandas dataframe containing prediction instance
     """
-    stream = stream.decode().replace("'", '"')
+    stream = stream.decode()
     data = json.loads(stream)
     data["previous_payouts"] = [data["previous_payouts"]]
+    data["ticket_types"] = [data["ticket_types"]]
     return pd.DataFrame(data)
 
 
-#if __name__ == "__main__":
-#    """
-#    Runs when the script is called from the command
-#    """
-#    file = argv[1]
-#    df1 = pd.read_json(argv[2])
-#    prob = prediction(file, df1)
-#    print(prob)
+def read_stream(sleepsec = 1):
+    sleep(sleepsec)
+    return urllib2.urlopen("http://galvanize-case-study-on-fraud.herokuapp.com/data_point").read()
+
+def connect_db(dbname = "Fraud_prediction",
+                   tablename = "Fraud_prediction_table", host="", port= ""):
+    client = MongoClient()
+    return client
+
+
+if __name__ == "__main__":
+   """
+   Runs when the script is called from the command
+   """
+   by = urllib2.urlopen("http://galvanize-case-study-on-fraud.herokuapp.com/data_point").read()
+   df = decode_stream(by)
+
+   cols_dashboard = ["org_name", "name", "payee_name"]
+
+   with open("rf_test.pkl") as f:
+       model = pickle.load(f)
+   client = connect_db()
+   json_output = prediction(model, by)
+   print(json_output)
 
