@@ -13,7 +13,7 @@ The record is read and made fraud prediciton based on a Random Forest Model we t
 + option 2. Read one entry from Galvanize website and make prediction
 + option 3. User upload an entry from web app and make prediction
 
-<img src="./web_app.png" width="380" ALIGN="Right"> 
+<img src="./web_app.png" width="800" ALIGN="Right"> 
 
 
 To run the app code. 
