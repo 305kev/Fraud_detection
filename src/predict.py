@@ -10,7 +10,7 @@ from pymongo import MongoClient
 The online prediction engine
 """
 
-def prediction(pklfile, to_predict):
+def prediction(model, to_predict):
     """
     Loads a pkl file containing the model to estimate the probability of fraud
     Loads the result into a mongoDB database
@@ -18,8 +18,6 @@ def prediction(pklfile, to_predict):
     :param to_predict: dataframe containing the instance to make a prediction about
     """
 
-    with open(pklfile, "rb") as f:
-        model = pickle.load(f)
 
     processed_example = DataProcessing(False, to_predict)
     processed_example.fit()
