@@ -9,11 +9,17 @@ The system requirement:
 
 
 The record is read and made fraud prediciton based on a Random Forest Model we trained on preprietary data sets from Galvanize. User has three options to make prediction: 
+
+
+<img src="./web_app.png" width="800" ALIGN="Center"> 
+
+
 + option 1. Look at the fraudulent events prediction in the database. 
 + option 2. Read one entry from Galvanize website and make prediction
 + option 3. User upload an entry from web app and make prediction
 
-<img src="./web_app.png" width="800" ALIGN="Right"> 
+
+
 
 
 To run the app code. 
