@@ -20,6 +20,16 @@ def prediction(model, to_predict):
     processed_example.transform()
     x = processed_example.df
     df1["predict"] = model.predict_proba(x)[:, 1]
+    ## Add one column to indicate the risk level
+    if Proba > 0.5 and Proba  <= 0.8:
+        df1["risk_level"] = "medium"
+    elif Proba > 0.8:
+        df1["risk_level"] = "high"
+    else:
+        df1["risk_level"] = "low"
+    df1["predict"] = Proba
+    print(type(df1["predict"]))
+
     return df1.T.to_dict().values()[0]
 
 
@@ -34,11 +44,6 @@ def decode_stream(stream):
     data["previous_payouts"] = [data["previous_payouts"]]
     data["ticket_types"] = [data["ticket_types"]]
     return pd.DataFrame(data)
-
-
-# def read_stream(sleepsec = 1):
-#    sleep(sleepsec)
-#    return urllib2.urlopen("http://galvanize-case-study-on-fraud.herokuapp.com/data_point").read()
 
 # def connect_db(dbname = "Fraud_prediction",
 #                   tablename = "Fraud_prediction_table", host="", port= ""):

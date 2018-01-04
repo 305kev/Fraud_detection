@@ -11,38 +11,52 @@
         <div style="display: table-row;">
             <div class="d_cell">
                 <h2>Fraud Detection Engine: Power of Machine Learning</h2>
-
                 <form action="{{ url_for('score') }}" method="post" >
-                    <p>
-                        Enter Your Own Entry as json
-                    </p>
-                    <textarea name="text1" cols="50" rows="15" >
 
+                     <select name="options">
+                      <option value="option1">Option1</option>
+                      <option value="option2">Option2</option>
+                      <option value="option3">Option3</option>
+                    </select>
+
+                    <p>
+                        Option 1 : Enter Your Own Entry as json
+                    </p>
+                    <textarea name="text1" cols="50" rows="5" >
                     </textarea>
                     <button type="submit" class="btn btn-default">Run</button>
-
                     <p>
-                        Check the live entry from http://galvanize-case-study-on-fraud.herokuapp.com/data_point
+                        Option 2 : Check one live entry from http://galvanize-case-study-on-fraud.herokuapp.com/data_point
                     </p>
+                    <button type="submit" class="btn btn-default">Go</button>
+                    <p>
+                        Option 3 : Display the latest events prediction from Database
+                    </p>
+                    <button type="submit" class="btn btn-default">Go</button>
 
-                    <button type="submit" class="btn btn-default">DashBoard</button>
 
                 </form>
 
             </div>
 
-
             <div class="d_cell">
                 <h2>Results</h2>
                 <div id="results">
-                    {% if</th>
-                                <th>Probability</th>
+                    {% if data is not none %}
+                    <table>
+                        <tbody>
+                            <thead>
+                                <th>  Organization </th>
+                                <th>  Event Name  </th>
+                                <th>  Payee Name  </th>
+                                <th>  Risk Level  </th>
                             </thead>
-                            {% for contents, sec_name, proba in data %}
+                            {% for org_name, name, payee_name, risk_level in data %}
                             <tr>
-                                <td>{{contents}}</td>
-                                <td>{{sec_name}}</td>
-                                <td>{{proba}}</td>
+                                <td>  {{org_name}}  </td>
+                                <td>  {{name}}  </td>
+                                <td>  {{payee_name}}  </td>
+                                <td>  {{risk_level}}  </td>
                             </tr>
                             {% endfor %}
                         </tbody>
