@@ -1,3 +1,0 @@
-export FLASK_APP=my_app/app.py
-
-flask run
