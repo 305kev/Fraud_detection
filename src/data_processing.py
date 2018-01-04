@@ -3,6 +3,9 @@ A set of functions that will process that data so that it can be used for model 
 """
 
 import pandas as pd
+from bs4 import BeautifulSoup
+import numpy as np
+
 
 def load_data(filename):
     """
@@ -30,12 +33,11 @@ class DataProcessing():
         """
         Controls the preprocessing process
         """
-        if self.flag
+        if self.train:
             self._add_target()
         self._add_payout_length()
         self._add_venue_bool()
         self._convert_unix_to_datetime()
-        self._unix_to_datetime()
 #        self._payee_org_name()
         self._high_fraud_country()
         self._high_fraud_email_domain()
@@ -45,12 +47,19 @@ class DataProcessing():
         #         "show_map", "user_age","fraud_country", "email_high_risk",
         #         "email_gmail", "email_medium_risk","payout_length", "venue_missing",
         #         "payee_org_iou"]
-        cols = ["fraud", "body_length","channels","delivery_method","fb_published",
+        cols = ["fraud", "body_length","channels","fb_published",
                 "gts","has_analytics","has_logo","name_length","num_order",
-                "num_payouts", "org_twitter", "org_facebook", "sale_duration",
+                "num_payouts", "org_twitter", "org_facebook", "sale_duration2",
                 "show_map", "user_age","fraud_country", "email_high_risk",
                 "email_gmail", "email_medium_risk","payout_length", "venue_missing"]
         self._keep_columns(cols)
+        self._fillnan()
+
+    def _fillnan(self):
+        org_twitter_median = self.df["org_twitter"].median()
+        org_facebook_median = self.df["org_facebook"].median()
+        self.df["org_twitter"] = self.df["org_twitter"].fillna(org_twitter_median)
+        self.df["org_facebook"] = self.df["org_facebook"].fillna(org_facebook_median)
 
     def _high_fraud_country(self):
         '''
@@ -76,7 +85,7 @@ class DataProcessing():
         self.df["email_medium_risk"] = self.df["email_domain"].isin(medium_risk)
 
 
-    def._keep_columns(self, cols):
+    def _keep_columns(self, cols):
         self.df = self.df[cols]
 
 
@@ -99,9 +108,9 @@ class DataProcessing():
         """
         Add a Boolean that indicates whether or not all venue information is included.
         """
-        self.df["venue_missing"] = df["venue_country"].isnull()
+        self.df["venue_missing"] = self.df["venue_country"].isnull()
 
-    def _unix_to_datetime(self, columns = ["approx_payout_date","event_created","event_end"]):
+    def _convert_unix_to_datetime(self, columns = ["approx_payout_date","event_created","event_end"]):
         '''
         Convert the columns of unix time to datetime object
         Input: DataFrame, columns to convert
