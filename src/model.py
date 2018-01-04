@@ -11,7 +11,7 @@ def build_model(input_file, output_model, model_name = "RandomForestClassifier")
     :return: Saved model to output_model
     '''
     raw_data = load_data(input_file)
-    pre_process_all = DataProcessing("train", raw_data)
+    pre_process_all = DataProcessing(True, raw_data)
     pre_process_all.fit()
     X_all = pre_process_all.df.drop(["fraud"], axis=1)
     y_all = pre_process_all.df["fraud"]

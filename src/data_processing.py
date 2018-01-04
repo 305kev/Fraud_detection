@@ -86,6 +86,8 @@ class DataProcessing():
 
 
     def _keep_columns(self, cols):
+        if not self.train:
+            cols = cols[1:]
         self.df = self.df[cols]
 
 
@@ -101,6 +103,7 @@ class DataProcessing():
         """
         Add the number of previous payouts the organization has received
         """
+
         self.df["payout_length"] = self.df["previous_payouts"].str.len()
 
 
