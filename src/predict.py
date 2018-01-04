@@ -5,7 +5,7 @@ from src.data_processing import DataProcessing
 import json
 import urllib2
 from time import sleep
-import cPickle as pickle
+import pickle
 from pymongo import MongoClient
 
 """
