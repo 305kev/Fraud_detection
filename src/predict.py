@@ -3,6 +3,7 @@ import pandas as pd
 from sys import argv
 from src.data_processing import DataProcessing
 import json
+import urllib2
 
 
 """
@@ -33,15 +34,11 @@ def decode_stream(stream):
     stream = stream.decode().replace("'", '"')
     data = json.loads(stream)
     data["previous_payouts"] = [data["previous_payouts"]]
+    data["ticket_types"]
     return pd.DataFrame(data)
 
 
 #if __name__ == "__main__":
-#    """
-#    Runs when the script is called from the command
-#    """
-#    file = argv[1]
-#    df1 = pd.read_json(argv[2])
-#    prob = prediction(file, df1)
-#    print(prob)
-
+    by = urllib2.urlopen("http://galvanize-case-study-on-fraud.herokuapp.com/data_point").read()
+    df = decode_stream(by)
+    print(df)
