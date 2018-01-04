@@ -14,13 +14,14 @@ def prediction(model, to_predict):
     Loads a pkl file containing the model to estimate the probability of fraud
     Loads the result into a mongoDB database
     :param model: object, a trained model object
-    :param to_predict: bytes object containing the instance to make a prediction about
+    :param json_out: json code with the predicted probability added.
     """
     df1 = decode_stream(to_predict)
     processed_example = DataProcessing(False, df1)
     processed_example.fit()
     X = processed_example.df
-    return model.predict_proba(X)[:,1]
+    df1["predict"] = model.predict_proba(X)[:,1]
+    return df1.T.to_dict().values()
 
 
 def decode_stream(stream):
