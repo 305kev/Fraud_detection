@@ -62,7 +62,7 @@ def decode_stream(stream):
 #
 #    cols_dashboard = ["org_name", "name", "payee_name"]
 #
-#    with open("data/rf_test.pkl") as f:
+#    with open("app/rf_test.pkl") as f:
 #        model = pickle.load(f)
 #    client = connect_db()
 #    json_output = prediction(model, by)

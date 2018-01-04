@@ -57,7 +57,7 @@ def score():
     return render_template('index.html', title='Fraud Prediction: Catch it Before it is Too Late', data=data_display)
 
 if __name__ == '__main__':
-    with open("data/rf_test.pkl") as f:
+    with open("./rf_test.pkl") as f:
         model = pickle.load(f)
     client = connect_db()
     dbname = "Fraud_prediction"
