@@ -26,29 +26,24 @@ def connect_db(dbname = "Fraud_prediction",
 
 @app.route('/')
 def index():
-    return render_template('index.html', title='Fraud Prediction', data=None)
+    return render_template('index.html', title='Fraud Prediction: Catch it Before Too Late', data=None)
 
-
-@app.route('/get', methods = ["GET"])
-def get_entry():
-    return render_template('index.html', title='Fraud Prediction', data=None)
 
 @app.route('/score', methods=['POST'])
 def score():
-    #option = request.form["Options"]
-    option = "option2"
-    if option == "option1":
-        json_inp = read_stream()
+    option = request.form["options"]
+    if option == "option2":
+        json_inp = read_stream(1)
         json_output = prediction(model, json_inp)
         mongobd_insert(json_output, client, tablename=tablename)
         data_display = zip([json_output[cols_dashboard[0]]],
                            [json_output[cols_dashboard[1]]],
                            [json_output[cols_dashboard[2]]],
                            [json_output[cols_dashboard[3]]])
-    elif option == "option2":
+    elif option == "option1":
         db = client[dbname]
         table = db[tablename]
-        cursor = table.find().sort("_id", 1).limit(10)
+        cursor = table.find().sort("_id", -1).limit(10)
         col1 = []
         col2 = []
         col3 = []
@@ -59,7 +54,7 @@ def score():
             col3.append(doc[cols_dashboard[2]])
             col4.append(doc[cols_dashboard[3]])
         data_display = zip(col1, col2, col3, col4)
-    return render_template('index.html', title='make prediction', data=data_display)
+    return render_template('index.html', title='Fraud Prediction: Catch it Before Too Late', data=data_display)
 
 if __name__ == '__main__':
     with open("../rf_test.pkl") as f:
