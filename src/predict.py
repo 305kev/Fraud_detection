@@ -23,7 +23,16 @@ def prediction(model, to_predict):
     processed_example = DataProcessing(False, df1)
     processed_example.fit()
     X = processed_example.df
-    df1["predict"] = model.predict_proba(X)[:,1]
+    Proba = model.predict_proba(X)[:,1][0]
+    ## Add one column to indicate the risk level
+    if Proba > 0.5 and Proba  <= 0.8:
+        df1["risk_level"] = "medium"
+    elif Proba > 0.8:
+        df1["risk_level"] = "high"
+    else:
+        df1["risk_level"] = "low"
+    df1["predict"] = Proba
+    print(type(df1["predict"]))
     return df1.T.to_dict().values()[0]
 
 
@@ -56,8 +65,6 @@ if __name__ == "__main__":
    """
    by = urllib2.urlopen("http://galvanize-case-study-on-fraud.herokuapp.com/data_point").read()
    df = decode_stream(by)
-
-   cols_dashboard = ["org_name", "name", "payee_name"]
 
    with open("rf_test.pkl") as f:
        model = pickle.load(f)

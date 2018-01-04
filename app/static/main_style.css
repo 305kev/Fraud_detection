@@ -12,7 +12,7 @@
 }
 
 tbody {
-    background-color: green;
+    background-color:  #F0F8FF;
 }
 
 h1 {
@@ -23,4 +23,8 @@ h1 {
 p {
     font-family: verdana;
     font-size: 20px;
+}
+
+table, td {
+   border: 1px solid black;
 }
